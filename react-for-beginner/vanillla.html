@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 5) click의 개수를 세기 위한 span 태그 생성 -->
+    <span>Total clicks: 0</span>
+
+    <!-- 1) html에서 버튼 생성 -->
+    <button id="btn">Click me</button>
+  </body>
+  <script>
+    // 6) 클릭할 때마다 숫자가 증가해야 하므로 counter 변수 필요
+    let counter = 0
+
+    // 2) js에서 1번에서 생성한 버튼 선택
+    const button = document.getElementById("btn")
+
+    // 7) span 태그를 가져와서, counter가 반영되게끔
+    const span = document.querySelector("span")
+
+    // 4) click 함수 선언 필요
+    function handleClick() {
+      // console.log("i have been clicked")
+      counter += 1
+      // console.log(counter)
+      // 8) span 태그 내 내용을 변경해주기
+      span.innerText = `Total clicks: ${counter}`
+    }
+    // 3) 이벤트 감지 (클릭 시 handleclick이라는 함수를 실행할 것)
+    button.addEventListener("click", handleClick)
+  </script>
+</html>
