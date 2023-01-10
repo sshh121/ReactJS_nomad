@@ -11,77 +11,34 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <!-- JSX 설치 후 type을 정의 -->
-  <script type="text/babel;">
-    // 1) span 태그 생성 (HTML 태그와 이름이 같을 필요 없음!)
-    // 괄호 안의 이름은 생성하고자 하는 html 태그와 동일해야함
-    // const h3 = React.createElement("h3", { id: "sexy-span", style: { color: "red" } }, "Hello I'm a span")
-    // 9) mouse enter 시 콘솔 창에 나타나게끔, event Listener 등록
-    
-    // --------- JSX 사용 !!! (1) 
-    function Title() {
-      return (
-        <h3 id="title" onMouseEnter={() => console.log('mouse enter')}>
-          Hello I'm a title
-        </h3>
-      )
-    }
-    
-    // const h3 = React.createElement(
-    //   "h3", 
-    //   {
-    //     onMouseEnter: () => console.log('mouse enter')
-    //   }, 
-    //   "Hello I'm a span"
-    // )
-    
-    
-    // 3) html의 id가 root인 div 태그 가져오기
+  <script type="text/babel">
     const root = document.getElementById("root")
 
-    // 4) 버튼 만들기
-    // 8) btn 속성에 event listener 등록하기
-    // -------------JSX (2)
-    function Button() {
+    // ----------- 자동 rerender
+    function App() {
+      // 1. return 전에 상수를 하나 만들기 (data 저장을 위해)
+      // 보통 함수 이름은 set + data명으로 설정
+      const [counter, setCounter] = React.useState(0)
+
+      // 2. setCounter 함수를 통해 onClick 함수 작성
+      // setCounter 인자로 값이 변하고, rerendering 됨
+      function onClick() {
+        return (
+          // setCounter(counter + 1)
+          // setCounter에 함수를 넣을 수 있음
+          // 해당 함수의 첫 번쨰 인자는 현재 값, return 값이 새로운 state가 됨
+          setCounter((current) => current + 1)
+        )
+      }
+      // 클릭 이벤트 리스너 등록
       return (
-        <button 
-          style={{
-            backgroundColor: "tomato",
-          }} 
-          onClick={() => console.log("im clicked")} 
-        >
-          Click me
-        </button>
+        <div>
+          <h3>Total clicks: {counter}</h3> 
+          <button onClick={onClick}>Click me</button>
+        </div>
       )
     }
-
-
-    // const btn = React.createElement(
-    //   "button", 
-    //   {
-    //   onClick: () => console.log("im clicked")
-    //   }, 
-    //   "Click me"
-    // )
-
-    // 2) span 태그를 페이지에 보여주기 (react-dom을 이용하여 html에 두기)
-    // span을 어디에 둬야 할지 정해야 하는데 위치가 정해지지 않았음! => html div 태그 생성
-    // ReactDOM.render(span, root) // span을 root안에 렌더링하게끔
-
-    // 6) 만약, span 태그와 btn을 둘 다 렌더링하고 싶다면? 
-    // -> 내용이 배열인, div 태그 하나 생성
-    <!-- 변수명 처음은 대문자 !!! 렌더링하고자 하는 태그들 차례대로 작성 -->
-    const Container = (
-      <div>
-        <Title /> 
-        <Button />
-      </div>
-    )
     
-    // 5) 버튼을 렌더링 하기
-    // ReactDOM.render(Container, root)
-
-    // 7) 렌더링
-    ReactDOM.render(Container, root)
-
+    ReactDOM.render(<App />, root)
   </script>
 </html>

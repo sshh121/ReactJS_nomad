@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <!-- 0) react, react-dom import 해오기 -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <!-- --------------JSX 설치 -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- JSX 설치 후 type을 정의 -->
+  <script type="text/babel">
+  
+    function App() {
+      const [minutes, setMinutes] = React.useState()
+      // input 값이 바뀔 때 함수 실행 -> change 이벤트 리스너 등록
+      // change 이벤트(input에 변화가 생길 때) 일 때, onChange 함수를 실행할 것이다 !
+      const onChange = (event) => {
+        // console.log(event.target.value) // input이 변할 때 마다 바뀐 값 보여줌
+        setMinutes(event.target.value)
+      }
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <label htmlFor="minutes">Minutes</label>
+          <input
+            value={minutes}
+            id="minutes"
+            placeholder="Minutes"
+            type="number"
+            onChange={onChange}  
+          />
+          <h4>You want to convert {minutes}</h4>
+          <label htmlFor="hours">Hours</label>
+          <input id="hours" placeholder="Hours" type="number" />
+        </div>
+      )
+    }
+        
+    const root = document.getElementById("root")
+    ReactDOM.render(<App />, root)
+  </script>
+</html>
