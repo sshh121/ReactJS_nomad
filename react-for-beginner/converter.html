@@ -12,7 +12,7 @@
   <!-- JSX 설치 후 type을 정의 -->
   <script type="text/babel">
   
-    function App() {
+    function MinutesToHours() {
       const [amount, setAmount] = React.useState(0)
 
       // flip 함수에 사용할 state가 추가적으로 필요함
@@ -37,7 +37,6 @@
 
       return (
         <div>
-          <h1>Super Converter</h1>
           <div>
             <label htmlFor="minutes">Minutes</label>
             <input
@@ -55,6 +54,8 @@
             <label htmlFor="hours">Hours</label>
             <input
             // value={Math.round(minutes / 60)}
+            // flipped 상태면, amount를 그대로 보여주고
+            // 아니라면, 분 -> 시간 converter
             value={flipped ? amount : Math.round(amount / 60)}
             id="hours"
             placeholder="Hours"
@@ -65,7 +66,94 @@
             />
           </div>
           <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>Flip</button>
+          <button onClick={onFlip}>{flipped ? "Turn back" : "Invert"}</button>
+        </div>
+      )
+    }
+
+    function KmToMiles() {
+      // 사용자가 입력하는 값 -> state로 관리되어야 함
+      const [num, setNum] = React.useState(0)
+      const onChange = (event) => {
+        // console.log(event.target.value)
+        // num이랑 input 값이랑 연동(?) 시켜주기 위해 setNum 함수를 이용
+        // => num이 바뀔 때마다 rerendering 됨 !
+        setNum(event.target.value)
+      }
+      // reset 버튼
+      const reset = () => setNum(0)
+
+
+      // invert로 km -> miles 또는 miles -> km
+      // 기본이 km -> miles 변환기
+      const [invert, setInvert] = React.useState(false)
+
+      function invertConverter() {
+        return (
+          reset(), // function 형태는 ,로 해줘야 하는 듯?
+          setInvert((current) => !current)
+        )
+      }
+
+      return (
+        <div>
+          <div>
+            <label htmlFor="km">Kilometers </label>
+            <input
+              type="number"
+              id="km"
+              placeholder="km"
+              onChange={onChange}
+              value={invert ? num * 1.609 : num }
+              // invert가 true일 때, disabled 되어야 한다 !
+              disabled={invert}
+            />
+          </div>
+            
+          <div>
+            <label htmlFor="miles">Miles </label>
+            <input
+              type="number"
+              id="miles"
+              placeholder="miles"
+              // value={(num/1.609).toFixed(4)} -> 소수점 4자리 고정으로, 입력 없을때도 0.0000으로 나옴
+              // 계산 시 소수점 4자리(반올림 결과)까지만 나오게끔 계산됨
+              value={invert ? num : Math.round((num/1.609+Number.EPSILON)*10000)/10000} 
+              // disabled 기준이 km -> miles 일때 (즉, invert 값이 false일 때)
+              disabled={!invert}
+              onChange={onChange}
+            />  
+          </div>
+
+          <button onClick={reset}>Reset</button>
+          <button onClick={invertConverter}>{invert ? "k2m" : "m2k"}</button>
+        </div>
+      )
+    }
+
+    function App() {
+      // Super Converter 컴포넌트 안에 또 다른 컴포넌트를 렌더링하기!
+      // 2개의 컴포넌트를 다 렌더링하는 것이 아니라, 선택할 수 있게끔
+      const [index, setIndex] = React.useState("xx")
+
+      // 사용자가 선택한 메뉴가 무엇인지 알 수 있도록
+      const onSelect = (event) => {
+        // console.log(event.target.value)
+        setIndex(event.target.value)
+      }
+
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="xx">Select Your Units</option>  
+            <option value="0">Minutes & Hours</option>  
+            <option value="1">KM & Miles</option>  
+          </select>
+          <hr/>
+          {index === "xx" ? "Please Select Your Units" : null}
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMiles /> : null}
         </div>
       )
     }
