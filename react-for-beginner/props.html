@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <!-- 0) react, react-dom import 해오기 -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <!-- Prop type을 지정해주는 패키지 가져오기 -->
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+  <!-- --------------JSX 설치 -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- JSX 설치 후 type을 정의 -->
+  <script type="text/babel">
+    // JS에서 prop 받을 때, 기본값을 설정해줄 수 있음
+    function Btn({text, fontSize = 16 }) {
+      // console.log(text, "was rendered")
+      // console.log(text, big)
+      // console.log(props)
+      return (
+        <button
+          // onClick={onClick}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            // fontSize: fontSize,
+            fontSize // 둘의 이름이 같기 때문에 축약 가능
+          }}
+        >
+        {text}
+        </button>
+      )
+    }
+
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    }
+
+    function App() {
+      return (
+        <div>
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text={"Continue"}/>
+        </div>
+      )
+    }
+        
+    const root = document.getElementById("root")
+    ReactDOM.render(<App />, root)
+  </script>
+</html>
